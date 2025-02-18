@@ -1,0 +1,11 @@
+services:
+  php:
+    environment:
+      APP_ENV: production
+    volumes:
+      - ./src:/var/www/html:ro
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"

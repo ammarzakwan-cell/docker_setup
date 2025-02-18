@@ -1,0 +1,7 @@
+/.vscode
+.env
+.env.uat
+.env.backup
+.env.prod
+.bak
+*.log

@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  php:
+    build:
+      context: ./docker/php
+    container_name: php
+    volumes:
+      - ./src:/var/www/html
+    env_file: .env
+    depends_on:
+      - mariadb
+    networks:
+      - app_network
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: always
+    env_file: .env
+    volumes:
+      - ${MARIADB_VOLUME}:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_INFO_EDGE_PASSWORD}
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:8.0.39
+    container_name: mysql
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: local
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+  nginx:
+    container_name: nginx
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - app_network
+
+  cron:
+    container_name: cron
+    build:
+      context: ./docker/cron
+    volumes:
+      - ./src:/var/www/html
+      - ./log/cron:/var/log/cron
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  mysqldata:
+  mariadb_data_local:
+  mariadb_data_dev:
+  mariadb_data_prod:

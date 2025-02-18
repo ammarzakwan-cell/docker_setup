@@ -1,0 +1,1 @@
+* * * * * echo "Cron job is running at $(date)" >> /var/log/cron/cron.log 2>&1

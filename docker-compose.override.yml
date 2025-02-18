@@ -1,0 +1,7 @@
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+    ports:
+      - "80:80"
+      - "443:443"

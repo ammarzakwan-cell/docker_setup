@@ -1,0 +1,12 @@
+services:
+  php:
+    environment:
+      APP_ENV: uat
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/php/uat.ini:/usr/local/etc/php/conf.d/uat.ini
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"

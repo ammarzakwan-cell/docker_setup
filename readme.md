@@ -16,8 +16,10 @@ DOCKER_SETUP/
 │   │   ├── Dockerfile          # Dockerfile for Nginx server
 │   │   ├── generate-ssl.sh     # Script to generate SSL certificates
 │   │   ├── nginx.conf          # Nginx configuration file
-│   ├── php/
+│   ├── app1/
 │   │   ├── Dockerfile          # Dockerfile for PHP-FPM service
+│   ├── app2/
+│   │   ├── Dockerfile  
 │── log/
 │   ├── cron/
 │   │   ├── cron.log            # Log file for cron job execution
@@ -39,13 +41,13 @@ DOCKER_SETUP/
 ## Services Overview
 
 ### 1. PHP Service (app1)
-- **Builds from:** `docker/php/Dockerfile`
+- **Builds from:** `docker/app1/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
 - **Build Args:** `WORKDIR=${WORKDIR:-/srv/app1}`
 
 ### 2. PHP Service (app2)
-- **Builds from:** `docker/php/Dockerfile`
+- **Builds from:** `docker/app2/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
 - **Build Args:** `WORKDIR=${WORKDIR:-/srv/app2}`

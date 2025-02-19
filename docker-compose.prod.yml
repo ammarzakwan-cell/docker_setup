@@ -1,7 +1,9 @@
 services:
-  php:
-    environment:
-      APP_ENV: production
+  app1:
+    volumes:
+      - ./src:/srv:ro
+
+  app2:
     volumes:
       - ./src:/srv:ro
 

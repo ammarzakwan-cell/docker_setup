@@ -1,10 +1,4 @@
 services:
-  php:
-    environment:
-      APP_ENV: uat
-    volumes:
-      - ./src:/srv
-
   nginx:
     image: nginx:alpine
     ports:

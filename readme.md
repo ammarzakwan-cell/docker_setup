@@ -3,6 +3,8 @@
 ## Project Overview
 This project sets up a **PHP web application** with **Nginx, MariaDB**, and **Cron Jobs** using Docker and Docker Compose. The setup is designed for easy deployment and development in a containerized environment.
 
+<br />
+
 ## Project Structure
 ```
 DOCKER_SETUP/
@@ -20,8 +22,12 @@ DOCKER_SETUP/
 │   ├── cron/
 │   │   ├── cron.log            # Log file for cron job execution
 │── src/
-│   ├── public/
-│   │   ├── index.php           # Sample PHP entry point
+│   ├── app1/
+│   │   ├── public/
+│   │   │   ├──index.php         # Sample PHP entry point
+│   ├── app2/
+│   │   ├── public/
+│   │   │   ├──index.php         # Sample PHP entry point
 │── .env                         # Environment variables for development
 │── .env.prod                    # Environment variables for production
 │── .env.uat                     # Environment variables for UAT (User Acceptance Testing)
@@ -31,68 +37,31 @@ DOCKER_SETUP/
 │── docker-compose.yml            # Main Docker Compose file
 │── readme.md                     # Project documentation
 ```
+<br />
 
-## Services
-This project includes the following services defined in `docker-compose.yml`:
+## Services Overview
 
-### 1️⃣ PHP (Backend Service)
+### 1. PHP Service (app1)
 - **Builds from:** `docker/php/Dockerfile`
-- **Mounts source code:** `./src:/var/www/html`
-- **Depends on:** `mariadb`
+- **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app1}`
 
-### 2️⃣ MariaDB (Database)
-- **Uses Image:** `mariadb:11`
-- **Stores data in volume:** `${MARIADB_VOLUME}`
-- **Environment Variables:**
-  - `MARIADB_ROOT_PASSWORD` (from `.env`)
+### 2. PHP Service (app2)
+- **Builds from:** `docker/php/Dockerfile`
+- **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app2}`
 
-### 3️⃣ Nginx (Web Server)
-- **Uses `nginx.conf` for configuration**
-- **Mounts source code:** `./src:/var/www/html`
-- **Depends on:** `php`
-- **Runs on:** `app_network`
+### 3. Nginx Service
+- Serves the PHP application
+- Depends on PHP service
 
-### 4️⃣ Cron (Scheduled Jobs)
-- **Builds from:** `docker/cron/Dockerfile`
-- **Mounts source code:** `./src:/var/www/html`
-- **Stores logs in:** `./log/cron:/var/log/cron`
-- **Runs on:** `app_network`
+### 4. Cron Service
+- Runs scheduled tasks
+- Mounts logs to `log/cron`
 
-## Getting Started
-### 1️⃣ Install Docker & Docker Compose
-Ensure you have Docker and Docker Compose installed:
-- [Install Docker](https://docs.docker.com/get-docker/)
-- [Install Docker Compose](https://docs.docker.com/compose/install/)
-
-### 2️⃣ Set Up Environment Variables
-Copy `.env.example` to `.env` and update necessary values:
-```sh
-cp .env.example .env
-```
-Modify `.env` as needed for your local development.
-
-### 3️⃣ Build and Start Services
-To start all services:
-```sh
-docker-compose up --build -d
-```
-
-### 4️⃣ Verify Running Containers
-Check if all services are running:
-```sh
-docker ps
-```
-
-### 5️⃣ Access the Application
-- **Nginx (Frontend):** `http://localhost`
-- **PHP (API):** `http://localhost/index.php`
-- **MariaDB:** Connect using a database client with credentials from `.env`
-- **Cron Logs:**
-  ```sh
-  docker exec -it cron tail -f /var/log/cron/cron.log
-  ```
+<br />
 
 ## Running the Containers
 
@@ -103,7 +72,7 @@ docker-compose up -d
 
 ### Development Environment
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.uat.yml up -d
 ```
 
 ### Production Environment
@@ -111,34 +80,26 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
-## Stopping & Cleaning Up
-To stop and remove containers:
-```sh
-docker-compose down
-```
-To remove volumes as well:
-```sh
-docker-compose down -v
-```
+<br />
 
-## Additional Configurations
-### Changing Timezone
-The project is configured for **Asia/Kuala Lumpur**. If you need a different timezone, update `Dockerfile` for PHP, Nginx, and Cron with:
-```dockerfile
-ENV TZ=Asia/Kuala_Lumpur
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-```
+## Networking
+All services run within the `app_network` Docker network.
 
-### Debugging Cron Jobs
-To list the current cron jobs inside the container:
+<br />
+
+## Logs
+- Cron logs are stored in `log/cron/cron.log`
+
+<br />
+
+## Useful command
+### After updating nginx file
 ```sh
-docker exec -it cron crontab -l
-```
-To manually trigger a cron job:
-```sh
-docker exec -it cron sh -c 'run-parts /etc/periodic/1min'
+docker-compose build --no-cache nginx
+docker-compose up -d --force-recreate nginx
+
 ```
 
 ## Author
-Maintained by **ammar** - Feel free to contribute or report issues!
+Maintained by **CTOS Basis** - Feel free to contribute or report issues!
 

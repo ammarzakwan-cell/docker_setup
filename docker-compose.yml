@@ -55,9 +55,6 @@ services:
       - ./src:/srv
     networks:
       - app_network
-    depends_on:
-      - app1
-      - app2
 
   cron:
     container_name: cron

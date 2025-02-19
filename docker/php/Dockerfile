@@ -1,6 +1,6 @@
 FROM php:8.4-fpm-alpine
 
-WORKDIR /var/www/html
+WORKDIR $WORKDIR
 
 # Install necessary Alpine packages
 RUN apk add --no-cache \
@@ -26,7 +26,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 # Set correct permissions
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /srv
 
 # Expose PHP-FPM port
 EXPOSE 9000

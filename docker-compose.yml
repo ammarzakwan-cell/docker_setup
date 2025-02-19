@@ -1,57 +1,70 @@
 version: '3.9'
 
 services:
-  php:
+  app1:
     build:
       context: ./docker/php
-    container_name: php
+      args:
+        WORKDIR: '${WORKDIR:-/srv/app1}'
+    container_name: php_app_1
     volumes:
-      - ./src:/var/www/html
-    env_file: .env
-    depends_on:
-      - mariadb
+      - ./src/app1:/srv/app1
     networks:
       - app_network
 
-  mariadb:
-    image: mariadb:11
-    container_name: mariadb
-    restart: always
-    env_file: .env
+  app2:
+    build:
+      context: ./docker/php
+      args:
+        WORKDIR: '${WORKDIR:-/srv/app2}'
+    container_name: php_app_2
     volumes:
-      - ${MARIADB_VOLUME}:/var/lib/mysql
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_INFO_EDGE_PASSWORD}
+      - ./src/app2:/srv/app2
     networks:
       - app_network
 
-  mysql:
-    image: mysql:8.0.39
-    container_name: mysql
-    volumes:
-      - mysqldata:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: local
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+  # mariadb:
+  #   image: mariadb:11
+  #   container_name: mariadb
+  #   restart: always
+  #   env_file: .env
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ${MARIADB_VOLUME}:/var/lib/mysql
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: ${DB_INFO_EDGE_PASSWORD}
+  #   networks:
+  #     - app_network
+
+  # mysql:
+  #   image: mysql:8.0.39
+  #   container_name: mysql
+  #   volumes:
+  #     - mysqldata:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_DATABASE: local
+  #     MYSQL_ALLOW_EMPTY_PASSWORD: yes
 
   nginx:
     container_name: nginx
     volumes:
-      - ./src:/var/www/html
-    depends_on:
-      - php
+      - ./src:/srv
     networks:
       - app_network
+    depends_on:
+      - app1
+      - app2
 
   cron:
     container_name: cron
     build:
       context: ./docker/cron
     volumes:
-      - ./src:/var/www/html
+      - ./src:/srv
       - ./log/cron:/var/log/cron
     networks:
       - app_network
@@ -59,8 +72,8 @@ services:
 networks:
   app_network:
 
-volumes:
-  mysqldata:
-  mariadb_data_local:
-  mariadb_data_dev:
-  mariadb_data_prod:
+# volumes:
+  # mysqldata:
+  # mariadb_data_local:
+  # mariadb_data_dev:
+  # mariadb_data_prod:

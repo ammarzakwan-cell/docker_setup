@@ -3,8 +3,7 @@ services:
     environment:
       APP_ENV: uat
     volumes:
-      - ./src:/var/www/html
-      - ./docker/php/uat.ini:/usr/local/etc/php/conf.d/uat.ini
+      - ./src:/srv
 
   nginx:
     image: nginx:alpine

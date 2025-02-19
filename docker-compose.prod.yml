@@ -3,7 +3,7 @@ services:
     environment:
       APP_ENV: production
     volumes:
-      - ./src:/var/www/html:ro
+      - ./src:/srv:ro
 
   nginx:
     image: nginx:alpine

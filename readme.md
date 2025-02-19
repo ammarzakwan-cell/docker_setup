@@ -28,9 +28,6 @@ DOCKER_SETUP/
 │   ├── app2/
 │   │   ├── public/
 │   │   │   ├──index.php         # Sample PHP entry point
-│── .env                         # Environment variables for development
-│── .env.prod                    # Environment variables for production
-│── .env.uat                     # Environment variables for UAT (User Acceptance Testing)
 │── docker-compose.override.yml   # Overrides for local development
 │── docker-compose.prod.yml       # Configuration for production
 │── docker-compose.uat.yml        # Configuration for UAT

@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 WORKDIR $WORKDIR
 
@@ -33,3 +33,6 @@ EXPOSE 9000
 
 # PHP-FPM
 CMD ["php-fpm"]
+
+
+

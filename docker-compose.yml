@@ -3,7 +3,7 @@ version: '3.9'
 services:
   app1:
     build:
-      context: ./docker/php
+      context: ./docker/app1
       args:
         WORKDIR: '${WORKDIR:-/srv/app1}'
     container_name: php_app_1
@@ -14,7 +14,7 @@ services:
 
   app2:
     build:
-      context: ./docker/php
+      context: ./docker/app2
       args:
         WORKDIR: '${WORKDIR:-/srv/app2}'
     container_name: php_app_2

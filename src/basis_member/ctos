@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
+$application = new Application();
+
+// Register your commands here, e.g.:
+// $application->add(new App\Command\MyCommand());
+$application->add(new \App\Command\HelloCronCommand());
+
+$application->run();

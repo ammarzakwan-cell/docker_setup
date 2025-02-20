@@ -1,25 +1,25 @@
 version: '3.9'
 
 services:
-  app1:
+  basis-member:
     build:
-      context: ./docker/app1
+      context: ./docker/basis_member
       args:
-        WORKDIR: '${WORKDIR:-/srv/app1}'
-    container_name: php_app_1
+        WORKDIR: '${WORKDIR:-/srv/basis_member}'
+    container_name: php_basis_member
     volumes:
-      - ./src/app1:/srv/app1
+      - ./src/basis_member:/srv/basis_member
     networks:
       - app_network
 
-  app2:
+  basis-admin:
     build:
-      context: ./docker/app2
+      context: ./docker/basis_admin
       args:
-        WORKDIR: '${WORKDIR:-/srv/app2}'
-    container_name: php_app_2
+        WORKDIR: '${WORKDIR:-/srv/basis_admin}'
+    container_name: php_basis_admin
     volumes:
-      - ./src/app2:/srv/app2
+      - ./src/basis_admin:/srv/basis_admin
     networks:
       - app_network
 

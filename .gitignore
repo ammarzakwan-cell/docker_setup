@@ -5,3 +5,4 @@
 .env.prod
 .bak
 *.log
+vendor

@@ -16,9 +16,9 @@ DOCKER_SETUP/
 │   │   ├── Dockerfile          # Dockerfile for Nginx server
 │   │   ├── generate-ssl.sh     # Script to generate SSL certificates
 │   │   ├── nginx.conf          # Nginx configuration file
-│   ├── app1/
+│   ├── basis_member/
 │   │   ├── Dockerfile          # Dockerfile for PHP-FPM service
-│   ├── app2/
+│   ├── basis_admin/
 │   │   ├── Dockerfile  
 │── log/
 │   ├── cron/

@@ -24,10 +24,10 @@ DOCKER_SETUP/
 │   ├── cron/
 │   │   ├── cron.log            # Log file for cron job execution
 │── src/
-│   ├── app1/
+│   ├── basis_member/
 │   │   ├── public/
 │   │   │   ├──index.php         # Sample PHP entry point
-│   ├── app2/
+│   ├── basis_admin/
 │   │   ├── public/
 │   │   │   ├──index.php         # Sample PHP entry point
 │── docker-compose.override.yml   # Overrides for local development
@@ -94,6 +94,10 @@ All services run within the `app_network` Docker network.
 ## Useful command
 ### After updating nginx file
 ```sh
+docker-compose build --no-cache <service>
+docker-compose up -d --force-recreate <service>
+
+#example
 docker-compose build --no-cache nginx
 docker-compose up -d --force-recreate nginx
 

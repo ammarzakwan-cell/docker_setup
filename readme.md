@@ -16,18 +16,18 @@ DOCKER_SETUP/
 │   │   ├── Dockerfile          # Dockerfile for Nginx server
 │   │   ├── generate-ssl.sh     # Script to generate SSL certificates
 │   │   ├── nginx.conf          # Nginx configuration file
-│   ├── app1/
+│   ├── basis_member/
 │   │   ├── Dockerfile          # Dockerfile for PHP-FPM service
-│   ├── app2/
+│   ├── basis_admin/
 │   │   ├── Dockerfile  
 │── log/
 │   ├── cron/
 │   │   ├── cron.log            # Log file for cron job execution
 │── src/
-│   ├── app1/
+│   ├── basis_member/
 │   │   ├── public/
 │   │   │   ├──index.php         # Sample PHP entry point
-│   ├── app2/
+│   ├── basis_admin/
 │   │   ├── public/
 │   │   │   ├──index.php         # Sample PHP entry point
 │── docker-compose.override.yml   # Overrides for local development
@@ -40,17 +40,17 @@ DOCKER_SETUP/
 
 ## Services Overview
 
-### 1. PHP Service (app1)
-- **Builds from:** `docker/app1/Dockerfile`
+### 1. PHP Service (basis_member)
+- **Builds from:** `docker/basis_member/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
-- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app1}`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/basis_member}`
 
-### 2. PHP Service (app2)
-- **Builds from:** `docker/app2/Dockerfile`
+### 2. PHP Service (basis_admin)
+- **Builds from:** `docker/basis_admin/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
-- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app2}`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/basis_admin}`
 
 ### 3. Nginx Service
 - Serves the PHP application
@@ -94,6 +94,10 @@ All services run within the `app_network` Docker network.
 ## Useful command
 ### After updating nginx file
 ```sh
+docker-compose build --no-cache <service>
+docker-compose up -d --force-recreate <service>
+
+#example
 docker-compose build --no-cache nginx
 docker-compose up -d --force-recreate nginx
 

@@ -40,17 +40,17 @@ DOCKER_SETUP/
 
 ## Services Overview
 
-### 1. PHP Service (app1)
-- **Builds from:** `docker/app1/Dockerfile`
+### 1. PHP Service (basis_member)
+- **Builds from:** `docker/basis_member/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
-- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app1}`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/basis_member}`
 
-### 2. PHP Service (app2)
-- **Builds from:** `docker/app2/Dockerfile`
+### 2. PHP Service (basis_admin)
+- **Builds from:** `docker/basis_admin/Dockerfile`
 - **Mounts source code:** `./src:/srv`
 - **Runs on:** `app_network`
-- **Build Args:** `WORKDIR=${WORKDIR:-/srv/app2}`
+- **Build Args:** `WORKDIR=${WORKDIR:-/srv/basis_admin}`
 
 ### 3. Nginx Service
 - Serves the PHP application

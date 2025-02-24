@@ -91,6 +91,12 @@ All services run within the `app_network` Docker network.
 
 <br />
 
+## Access the application
+- basis_member `https://local.infoctosbasis.com/`
+- basis_admin `https://local.infoadmin.com/`
+
+<br />
+
 ## Useful command
 ### After updating nginx file
 ```sh

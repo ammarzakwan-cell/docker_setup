@@ -1,1 +1,2 @@
-* * * * * cd /srv/basis_member && php ctos app:hello-cron >> /var/log/cron/basis_member.log 2>&1
+* * * * * cd /srv/data_exchange && php ctos app:hello-cron >> /var/log/data_exchange/data_exchange.log 2>&1
+0 0 * * 0 /usr/sbin/logrotate /etc/logrotate.d/custom_logs

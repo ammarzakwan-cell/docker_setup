@@ -4,22 +4,30 @@ services:
   basis-member:
     build:
       context: ./docker/basis_member
-      args:
-        WORKDIR: '${WORKDIR:-/srv/basis_member}'
     container_name: php_basis_member
     volumes:
       - ./src/basis_member:/srv/basis_member
+      - ./log/basis_member:/var/log/basis_member
     networks:
       - app_network
 
   basis-admin:
     build:
       context: ./docker/basis_admin
-      args:
-        WORKDIR: '${WORKDIR:-/srv/basis_admin}'
     container_name: php_basis_admin
     volumes:
       - ./src/basis_admin:/srv/basis_admin
+      - ./log/basis_admin:/var/log/basis_admin
+    networks:
+      - app_network
+
+  data-exchange:
+    build:
+      context: ./docker/data_exchange
+    container_name: php_data_exchange
+    volumes:
+      - ./src/data_exchange:/srv/data_exchange
+      - ./log/data_exchange:/var/log/data_exchange
     networks:
       - app_network
 
@@ -52,25 +60,46 @@ services:
   nginx:
     container_name: nginx
     volumes:
-      - ./src:/srv
+      - ./src:/srv # Mount assets/themes
+      - ./log/nginx:/var/log/nginx
     networks:
       - app_network
 
   cron:
-    container_name: cron
     build:
       context: ./docker/cron
+    container_name: cron
     volumes:
       - ./src:/srv
       - ./log/cron:/var/log/cron
+      - ./log/nginx:/var/log/nginx
+      - ./log/basis_member:/var/log/basis_member
+      - ./log/basis_admin:/var/log/basis_admin
+      - ./log/data_exchange:/var/log/data_exchange
+      - ./log/minio:/var/log/minio
+      - ./docker/cron/logrotate.conf:/etc/logrotate.d/custom_logs
+    networks:
+      - app_network
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"  # API Port
+      - "9090:9090"  # Console UI Port
+    env_file: .env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+      - ./log/minio:/var/log/minio
+    command: server --console-address ":9090" /data
     networks:
       - app_network
 
 networks:
   app_network:
 
-# volumes:
-  # mysqldata:
-  # mariadb_data_local:
-  # mariadb_data_dev:
-  # mariadb_data_prod:
+volumes:
+  minio_data:

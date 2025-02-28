@@ -8,6 +8,5 @@ services:
       - ./src:/srv:ro
 
   nginx:
-    image: nginx:alpine
     ports:
       - "80:80"

@@ -21,16 +21,6 @@ services:
     networks:
       - app_network
 
-  data-exchange:
-    build:
-      context: ./docker/data_exchange
-    container_name: php_data_exchange
-    volumes:
-      - ./src/data_exchange:/srv/data_exchange
-      - ./log/data_exchange:/var/log/data_exchange
-    networks:
-      - app_network
-
   # mariadb:
   #   image: mariadb:11
   #   container_name: mariadb
@@ -58,10 +48,12 @@ services:
   #     MYSQL_ALLOW_EMPTY_PASSWORD: yes
 
   nginx:
+    image: nginx:latest
     container_name: nginx
     volumes:
       - ./src:/srv # Mount assets/themes
       - ./log/nginx:/var/log/nginx
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app_network
 
@@ -75,7 +67,6 @@ services:
       - ./log/nginx:/var/log/nginx
       - ./log/basis_member:/var/log/basis_member
       - ./log/basis_admin:/var/log/basis_admin
-      - ./log/data_exchange:/var/log/data_exchange
       - ./log/minio:/var/log/minio
       - ./docker/cron/logrotate.conf:/etc/logrotate.d/custom_logs
     networks:

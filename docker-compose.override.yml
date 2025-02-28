@@ -1,7 +1,20 @@
 services:
-  nginx:
+  ssl:
     build:
-      context: ./docker/nginx
+      context: ./docker/ssl
+    container_name: ssl
+    volumes:
+      - ./docker/ssl/certs:/certs
+      
+  nginx:
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./src:/srv # Mount assets/themes
+      - ./log/nginx:/var/log/nginx
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/ssl/certs:/certs
+    depends_on:
+      ssl:
+        condition: service_started

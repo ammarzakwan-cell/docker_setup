@@ -1,6 +1,6 @@
-FROM php:8.3-fpm-alpine
+FROM php:5.6-fpm-alpine
 
-WORKDIR $WORKDIR
+WORKDIR /srv/basis_admin
 
 # Install necessary Alpine packages
 RUN apk add --no-cache \
